@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 import SearchView from './SearchView';
-import { fetchUnits } from '../../redux/actions/unit';
+import { fetchUnits, setNewFilters } from '../../redux/actions/unit';
 import { changeSelectedUnit } from '../../redux/actions/selectedUnit';
 import { getOrderedData } from '../../redux/selectors/results';
+import { getLocaleString } from '../../redux/selectors/locale';
 
 // Listen to redux state
 // const unitList = getUnitList(state);
@@ -10,14 +11,17 @@ const mapStateToProps = (state) => {
   const map = state.mapRef.leafletElement;
   const { units } = state;
   const {
-    isFetching, count, max, previousSearch,
+    filters, isFetching, count, max, previousSearch,
   } = units;
+  const getLocaleText = textObject => getLocaleString(state, textObject);
   const unitData = getOrderedData(state);
   return {
+    filters,
     unit: state.unit,
     units: unitData,
     isFetching,
     count,
+    getLocaleText,
     max,
     map,
     previousSearch,
@@ -27,6 +31,6 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   {
-    fetchUnits, changeSelectedUnit,
+    fetchUnits, changeSelectedUnit, setNewFilters,
   },
 )(SearchView);

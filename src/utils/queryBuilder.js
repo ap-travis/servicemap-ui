@@ -8,7 +8,7 @@ const allowedTypes = [
 const searchQueryData = {
   page: 1,
   page_size: 200,
-  only: 'unit.location,unit.name,unit.municipality,unit.accessibility_shortcoming_count',
+  only: 'unit.location,unit.name,unit.municipality,unit.accessibility_shortcoming_count,unit.services',
   geometry: true,
 };
 
@@ -62,6 +62,7 @@ class QueryBuilder {
     } else {
       this.searchQuery = null;
     }
+
     return this;
   }
 

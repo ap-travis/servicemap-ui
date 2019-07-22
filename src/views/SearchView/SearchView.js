@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter, Redirect } from 'react-router-dom';
 import {
-  Paper, Divider, withStyles, Typography, Link,
+  Paper, withStyles, Typography, Link,
 } from '@material-ui/core';
 import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
 import styles from './styles';
@@ -216,7 +216,7 @@ class SearchView extends React.Component {
 
   render() {
     const {
-      isFetching, intl, count, max,
+      classes, filters, isFetching, intl, count, max, getLocaleText, setNewFilters,
     } = this.props;
     const progress = (isFetching && count) ? Math.floor((count / max * 100)) : 0;
 
@@ -239,7 +239,16 @@ class SearchView extends React.Component {
           placeholder={intl && intl.formatMessage({ id: 'search.input.placeholder' })}
           text={this.getSearchParam() || ''}
         />
-        <Divider aria-hidden="true" />
+        {
+          filters
+          && filters.service
+          && (
+            <>
+              <Typography className={classes.margin} align="left">{`Näytetään tulokset palvelulla "${getLocaleText(filters.service.name)}"`}</Typography>
+              <Typography className={`${classes.margin} ${classes.link}`} component="a" align="left" onClick={() => setNewFilters(null)} role="link">Näytä kaikki tulokset</Typography>
+            </>
+          )
+        }
         <Paper elevation={1} square aria-live="polite" style={paperStyles}>
           {
             isFetching
@@ -275,9 +284,12 @@ export default withRouter(injectIntl(withStyles(styles)(SearchView)));
 
 // Typechecking
 SearchView.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.any).isRequired,
   changeSelectedUnit: PropTypes.func,
   count: PropTypes.number,
   fetchUnits: PropTypes.func,
+  filters: PropTypes.shape({ service: PropTypes.object }),
+  getLocaleText: PropTypes.func.isRequired,
   intl: intlShape.isRequired,
   isFetching: PropTypes.bool,
   location: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -286,12 +298,14 @@ SearchView.propTypes = {
   units: PropTypes.arrayOf(PropTypes.any),
   map: PropTypes.objectOf(PropTypes.any),
   match: PropTypes.objectOf(PropTypes.any).isRequired,
+  setNewFilters: PropTypes.func.isRequired,
 };
 
 SearchView.defaultProps = {
   changeSelectedUnit: () => {},
   count: 0,
   fetchUnits: () => {},
+  filters: {},
   isFetching: false,
   max: 0,
   previousSearch: null,
