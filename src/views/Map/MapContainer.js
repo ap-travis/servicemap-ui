@@ -15,7 +15,7 @@ import swapCoordinates from './utils/swapCoordinates';
 import { mapOptions } from './constants/mapConstants';
 
 import SearchBar from '../../components/SearchBar';
-import TitleBar from '../../components/TitleBar/TitleBar';
+import TitleBar from '../../components/TitleBar';
 import config from '../../../config';
 
 class MapContainer extends React.Component {
