@@ -1,3 +1,5 @@
+/*
+// USING CLI interface to run all tests in folder removing need for runner
 const createTestCafe = require('testcafe');
 
 let testcafe = null;
@@ -23,3 +25,4 @@ createTestCafe('localhost')
     console.log(`Tests failed: ${failedCount}`);
     testcafe.close();
   });
+  */
